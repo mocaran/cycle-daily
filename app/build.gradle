@@ -1,0 +1,19 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.cycledaily.app'
+    compileSdk 36
+    compileSdkMinor 1
+
+    defaultConfig {
+        applicationId 'com.cycledaily.app'
+        minSdk 26
+        targetSdk 34
+        versionCode 17
+        versionName '2.6'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
