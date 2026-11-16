@@ -1,7 +1,35 @@
 plugins { id 'com.android.application' }
 
+def localSettings = new Properties()
+def localSettingsFile = rootProject.file('local.properties')
+if (localSettingsFile.exists()) localSettingsFile.withInputStream { localSettings.load(it) }
+def amapKey = localSettings.getProperty('AMAP_WEB_KEY', System.getenv('AMAP_WEB_KEY') ?: '')
+def amapSecurity = localSettings.getProperty('AMAP_SECURITY_CODE', System.getenv('AMAP_SECURITY_CODE') ?: '')
+def generatedAmapAssets = layout.buildDirectory.dir('generated/amapAssets')
+
+def generateAmapHtml = tasks.register('generateAmapHtml') {
+    inputs.file('src/main/assets/amap.template.html')
+    inputs.property('amapKey', amapKey)
+    inputs.property('amapSecurity', amapSecurity)
+    outputs.dir(generatedAmapAssets)
+    doLast {
+        if (!amapKey || !amapSecurity) throw new GradleException('Set AMAP_WEB_KEY and AMAP_SECURITY_CODE in local.properties or environment')
+        def template = file('src/main/assets/amap.template.html').getText('UTF-8')
+        def outputFile = generatedAmapAssets.get().file('amap.html').asFile
+        outputFile.parentFile.mkdirs()
+        outputFile.setText(template
+                .replace('__AMAP_WEB_KEY__', amapKey)
+                .replace('__AMAP_SECURITY_CODE__', amapSecurity), 'UTF-8')
+    }
+}
+tasks.configureEach { task ->
+    if (task.name ==~ /merge.*Assets/ || task.name.toLowerCase().contains('lint'))
+        task.dependsOn(generateAmapHtml)
+}
+
 android {
     namespace 'com.cycledaily.app'
+    sourceSets.main.assets.srcDir(generatedAmapAssets.get().asFile.absolutePath)
     compileSdk 36
     compileSdkMinor 1
 
@@ -9,8 +37,8 @@ android {
         applicationId 'com.cycledaily.app'
         minSdk 26
         targetSdk 34
-        versionCode 17
-        versionName '2.6'
+        versionCode 18
+        versionName '2.7'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17

@@ -47,7 +47,7 @@ public class RouteActivity extends Activity {
         root.addView(back, backLp);
         back.setOnClickListener(v -> finish());
         TextView credit = new TextView(this);
-        credit.setText("蓝点 · 当前位置");
+        credit.setText("蓝点 · 当前位置  ·  高德地图");
         credit.setTextColor(Color.WHITE); credit.setTextSize(11);
         credit.setPadding(dp(8), dp(6), dp(8), dp(6));
         credit.setBackgroundColor(0xbb101815);

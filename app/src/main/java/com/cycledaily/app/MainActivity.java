@@ -420,7 +420,7 @@ public class MainActivity extends Activity {
         mapIssue = label("等待定位", 12, Color.WHITE, false);
         mapContainer.addView(mapIssue, new FrameLayout.LayoutParams(-2, -2, Gravity.CENTER));
 
-        TextView hint = label("离线轨迹 · 点按全屏", 11, Color.WHITE, false);
+        TextView hint = label("高德地图 · 点按全屏", 11, Color.WHITE, false);
         hint.setBackgroundColor(0xaa101815);
         hint.setPadding(dp(6), dp(3), dp(6), dp(3));
         FrameLayout.LayoutParams hintParams = new FrameLayout.LayoutParams(-2, -2, Gravity.BOTTOM | Gravity.END);
